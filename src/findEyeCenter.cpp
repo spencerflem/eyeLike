@@ -11,6 +11,8 @@
 #include "constants.h"
 #include "helpers.h"
 
+inline double round( double d ){    return floor( d + 0.5 );}
+
 // Pre-declarations
 cv::Mat floodKillEdges(cv::Mat &mat);
 

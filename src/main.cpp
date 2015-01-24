@@ -9,7 +9,6 @@
 
 #include "constants.h"
 #include "findEyeCenter.h"
-#include "findEyeCorner.h"
 
 
 /** Constants **/
@@ -51,7 +50,6 @@ int main( int argc, const char** argv ) {
   cv::namedWindow("aaa",CV_WINDOW_NORMAL);
   cv::moveWindow("aaa", 10, 800);
 
-  createCornerKernels();
   ellipse(skinCrCbHist, cv::Point(113, 155.6), cv::Size(23.4, 15.2),
           43.0, 0.0, 360.0, cv::Scalar(255, 255, 255), -1);
 
@@ -84,8 +82,6 @@ int main( int argc, const char** argv ) {
     }
   }
 
-  releaseCornerKernels();
-
   return 0;
 }
 
@@ -109,29 +105,6 @@ void findEyes(cv::Mat frame_gray, cv::Rect face) {
   //-- Find Eye Centers
   cv::Point leftPupil = findEyeCenter(faceROI,leftEyeRegion,"Left Eye");
   cv::Point rightPupil = findEyeCenter(faceROI,rightEyeRegion,"Right Eye");
-  // get corner regions
-  cv::Rect leftRightCornerRegion(leftEyeRegion);
-  leftRightCornerRegion.width -= leftPupil.x;
-  leftRightCornerRegion.x += leftPupil.x;
-  leftRightCornerRegion.height /= 2;
-  leftRightCornerRegion.y += leftRightCornerRegion.height / 2;
-  cv::Rect leftLeftCornerRegion(leftEyeRegion);
-  leftLeftCornerRegion.width = leftPupil.x;
-  leftLeftCornerRegion.height /= 2;
-  leftLeftCornerRegion.y += leftLeftCornerRegion.height / 2;
-  cv::Rect rightLeftCornerRegion(rightEyeRegion);
-  rightLeftCornerRegion.width = rightPupil.x;
-  rightLeftCornerRegion.height /= 2;
-  rightLeftCornerRegion.y += rightLeftCornerRegion.height / 2;
-  cv::Rect rightRightCornerRegion(rightEyeRegion);
-  rightRightCornerRegion.width -= rightPupil.x;
-  rightRightCornerRegion.x += rightPupil.x;
-  rightRightCornerRegion.height /= 2;
-  rightRightCornerRegion.y += rightRightCornerRegion.height / 2;
-  rectangle(debugFace,leftRightCornerRegion,200);
-  rectangle(debugFace,leftLeftCornerRegion,200);
-  rectangle(debugFace,rightLeftCornerRegion,200);
-  rectangle(debugFace,rightRightCornerRegion,200);
   // change eye centers to face coordinates
   rightPupil.x += rightEyeRegion.x;
   rightPupil.y += rightEyeRegion.y;
@@ -141,52 +114,10 @@ void findEyes(cv::Mat frame_gray, cv::Rect face) {
   circle(debugFace, rightPupil, 3, 1234);
   circle(debugFace, leftPupil, 3, 1234);
 
-  //-- Find Eye Corners
-  if (kEnableEyeCorner) {
-    cv::Point2f leftRightCorner = findEyeCorner(faceROI(leftRightCornerRegion), true, false);
-    leftRightCorner.x += leftRightCornerRegion.x;
-    leftRightCorner.y += leftRightCornerRegion.y;
-    cv::Point2f leftLeftCorner = findEyeCorner(faceROI(leftLeftCornerRegion), true, true);
-    leftLeftCorner.x += leftLeftCornerRegion.x;
-    leftLeftCorner.y += leftLeftCornerRegion.y;
-    cv::Point2f rightLeftCorner = findEyeCorner(faceROI(rightLeftCornerRegion), false, true);
-    rightLeftCorner.x += rightLeftCornerRegion.x;
-    rightLeftCorner.y += rightLeftCornerRegion.y;
-    cv::Point2f rightRightCorner = findEyeCorner(faceROI(rightRightCornerRegion), false, false);
-    rightRightCorner.x += rightRightCornerRegion.x;
-    rightRightCorner.y += rightRightCornerRegion.y;
-    circle(faceROI, leftRightCorner, 3, 200);
-    circle(faceROI, leftLeftCorner, 3, 200);
-    circle(faceROI, rightLeftCorner, 3, 200);
-    circle(faceROI, rightRightCorner, 3, 200);
-  }
-
   imshow(face_window_name, faceROI);
 //  cv::Rect roi( cv::Point( 0, 0 ), faceROI.size());
 //  cv::Mat destinationROI = debugImage( roi );
 //  faceROI.copyTo( destinationROI );
-}
-
-
-cv::Mat findSkin (cv::Mat &frame) {
-  cv::Mat input;
-  cv::Mat output = cv::Mat(frame.rows,frame.cols, CV_8U);
-
-  cvtColor(frame, input, CV_BGR2YCrCb);
-
-  for (int y = 0; y < input.rows; ++y) {
-    const cv::Vec3b *Mr = input.ptr<cv::Vec3b>(y);
-//    uchar *Or = output.ptr<uchar>(y);
-    cv::Vec3b *Or = frame.ptr<cv::Vec3b>(y);
-    for (int x = 0; x < input.cols; ++x) {
-      cv::Vec3b ycrcb = Mr[x];
-//      Or[x] = (skinCrCbHist.at<uchar>(ycrcb[1], ycrcb[2]) > 0) ? 255 : 0;
-      if(skinCrCbHist.at<uchar>(ycrcb[1], ycrcb[2]) == 0) {
-        Or[x] = cv::Vec3b(0,0,0);
-      }
-    }
-  }
-  return output;
 }
 
 /**
