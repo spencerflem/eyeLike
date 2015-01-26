@@ -19,13 +19,28 @@ void detectAndDisplay( cv::Mat frame );
 
 /** Global variables */
 //-- Note, either copy these two files from opencv/data/haarscascades to your current folder, or change these locations
-cv::String face_cascade_name = "../../../res/haarcascade_frontalface_alt.xml";
+cv::String face_cascade_name = "C:/Users/Katherine Hoffman/Documents/GitHub/eyeLike/res/haarcascade_frontalface_alt.xml";
 cv::CascadeClassifier face_cascade;
 std::string main_window_name = "Capture - Face detection";
 std::string face_window_name = "Capture - Face";
 cv::RNG rng(12345);
 cv::Mat debugImage;
 cv::Mat skinCrCbHist = cv::Mat::zeros(cv::Size(256, 256), CV_8UC1);
+
+struct eyeData {
+	cv::Rect face;
+	cv::Rect leftEyeRegion;
+	cv::Rect rightEyeRegion;
+	cv::Point leftPupil;
+	cv::Point rightPupil;
+};
+
+struct displayData {
+	cv::Mat debugImage;
+	cv::Mat faceROI;
+	cv::Mat leftEye;
+	cv::Mat rightEye;
+};
 
 /**
  * @function main

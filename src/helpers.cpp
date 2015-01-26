@@ -34,6 +34,6 @@ cv::Mat matrixMagnitude(const cv::Mat &matX, const cv::Mat &matY) {
 double computeDynamicThreshold(const cv::Mat &mat, double stdDevFactor) {
   cv::Scalar stdMagnGrad, meanMagnGrad;
   cv::meanStdDev(mat, meanMagnGrad, stdMagnGrad);
-  double stdDev = stdMagnGrad[0] / sqrt(mat.rows*mat.cols);
+  double stdDev = stdMagnGrad[0] / sqrt(double(mat.rows*mat.cols));
   return stdDevFactor * stdDev + meanMagnGrad[0];
 }
