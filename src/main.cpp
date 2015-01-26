@@ -9,6 +9,8 @@
 
 #include "constants.h"
 #include "findEyeCenter.h"
+#include "mapToGrid.h"
+#include "structs.h"
 
 
 /** Constants **/
@@ -19,28 +21,13 @@ void detectAndDisplay( cv::Mat frame );
 
 /** Global variables */
 //-- Note, either copy these two files from opencv/data/haarscascades to your current folder, or change these locations
-cv::String face_cascade_name = "C:/Users/Katherine Hoffman/Documents/GitHub/eyeLike/res/haarcascade_frontalface_alt.xml";
+cv::String face_cascade_name = "C:/Users/Katherine Hoffman/Desktop/haarcascade_frontalface_alt.xml";
 cv::CascadeClassifier face_cascade;
 std::string main_window_name = "Capture - Face detection";
 std::string face_window_name = "Capture - Face";
 cv::RNG rng(12345);
 cv::Mat debugImage;
 cv::Mat skinCrCbHist = cv::Mat::zeros(cv::Size(256, 256), CV_8UC1);
-
-struct eyeData {
-	cv::Rect face;
-	cv::Rect leftEyeRegion;
-	cv::Rect rightEyeRegion;
-	cv::Point leftPupil;
-	cv::Point rightPupil;
-};
-
-struct displayData {
-	cv::Mat debugImage;
-	cv::Mat faceROI;
-	cv::Mat leftEye;
-	cv::Mat rightEye;
-};
 
 /**
  * @function main
@@ -96,7 +83,9 @@ int main( int argc, const char** argv ) {
 
     }
   }
-
+  else {
+	  printf(" --(!) No captured frame -- Break!");
+  }
   return 0;
 }
 
@@ -125,6 +114,16 @@ void findEyes(cv::Mat frame_gray, cv::Rect face) {
   rightPupil.y += rightEyeRegion.y;
   leftPupil.x += leftEyeRegion.x;
   leftPupil.y += leftEyeRegion.y;
+
+  EyeData eyeData;
+  eyeData.face = face;
+  eyeData.leftEyeRegion = leftEyeRegion;
+  eyeData.rightEyeRegion = rightEyeRegion;
+  eyeData.leftPupil = leftPupil;
+  eyeData.rightPupil = rightPupil;
+
+  mapToGrid(eyeData);
+
   // draw eye centers
   circle(debugFace, rightPupil, 3, 1234);
   circle(debugFace, leftPupil, 3, 1234);
