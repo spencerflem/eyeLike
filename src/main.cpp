@@ -11,6 +11,7 @@
 #include "findEyeCenter.h"
 #include "mapToGrid.h"
 #include "structs.h"
+#include "display.h"
 
 
 /** Constants **/
@@ -23,8 +24,6 @@ void detectAndDisplay( cv::Mat frame );
 //-- Note, either copy these two files from opencv/data/haarscascades to your current folder, or change these locations
 cv::String face_cascade_name = "C:/Users/Katherine Hoffman/Desktop/haarcascade_frontalface_alt.xml";
 cv::CascadeClassifier face_cascade;
-std::string main_window_name = "Capture - Face detection";
-std::string face_window_name = "Capture - Face";
 cv::RNG rng(12345);
 cv::Mat debugImage;
 cv::Mat skinCrCbHist = cv::Mat::zeros(cv::Size(256, 256), CV_8UC1);
@@ -39,10 +38,15 @@ int main( int argc, const char** argv ) {
   // Load the cascades
   if( !face_cascade.load( face_cascade_name ) ){ printf("--(!)Error loading face cascade, please change face_cascade_name in source code.\n"); return -1; };
 
-  cv::namedWindow(main_window_name,CV_WINDOW_NORMAL);
-  cv::moveWindow(main_window_name, 400, 100);
-  cv::namedWindow(face_window_name,CV_WINDOW_NORMAL);
-  cv::moveWindow(face_window_name, 10, 100);
+  cv::namedWindow(kmain_window_name,CV_WINDOW_NORMAL);
+  cv::moveWindow(kmain_window_name, 400, 100);
+  cv::namedWindow(kface_window_name,CV_WINDOW_NORMAL);
+  cv::moveWindow(kface_window_name, 10, 100);
+  cv::namedWindow(kleft_eye_window_name,CV_WINDOW_NORMAL);
+  cv::moveWindow(kleft_eye_window_name, 10, 100);
+  cv::namedWindow(kright_eye_window_name,CV_WINDOW_NORMAL);
+  cv::moveWindow(kright_eye_window_name, 10, 100);
+  cv::namedWindow(debugWindow + " Mask",CV_WINDOW_NORMAL);
   cv::namedWindow("Right Eye",CV_WINDOW_NORMAL);
   cv::moveWindow("Right Eye", 10, 600);
   cv::namedWindow("Left Eye",CV_WINDOW_NORMAL);
@@ -73,8 +77,6 @@ int main( int argc, const char** argv ) {
         break;
       }
 
-      imshow(main_window_name,debugImage);
-
       int c = cv::waitKey(10);
       if( (char)c == 'c' ) { break; }
       if( (char)c == 'f' ) {
@@ -89,7 +91,7 @@ int main( int argc, const char** argv ) {
   return 0;
 }
 
-void findEyes(cv::Mat frame_gray, cv::Rect face) {
+NumData findEyes(cv::Mat frame_gray, cv::Rect face) {
   cv::Mat faceROI = frame_gray(face);
   cv::Mat debugFace = faceROI;
 
@@ -115,23 +117,18 @@ void findEyes(cv::Mat frame_gray, cv::Rect face) {
   leftPupil.x += leftEyeRegion.x;
   leftPupil.y += leftEyeRegion.y;
 
-  EyeData eyeData;
-  eyeData.face = face;
-  eyeData.leftEyeRegion = leftEyeRegion;
-  eyeData.rightEyeRegion = rightEyeRegion;
-  eyeData.leftPupil = leftPupil;
-  eyeData.rightPupil = rightPupil;
+  NumData numData;
 
-  mapToGrid(eyeData);
+  numData.face = face;
+  numData.leftEyeRegion = leftEyeRegion;
+  numData.rightEyeRegion = rightEyeRegion;
+  numData.leftPupil = leftPupil;
+  numData.rightPupil = rightPupil;
 
-  // draw eye centers
-  circle(debugFace, rightPupil, 3, 1234);
-  circle(debugFace, leftPupil, 3, 1234);
-
-  imshow(face_window_name, faceROI);
 //  cv::Rect roi( cv::Point( 0, 0 ), faceROI.size());
 //  cv::Mat destinationROI = debugImage( roi );
 //  faceROI.copyTo( destinationROI );
+  return numData;
 }
 
 /**
@@ -150,14 +147,17 @@ void detectAndDisplay( cv::Mat frame ) {
   //cv::pow(frame_gray, CV_64F, frame_gray);
   //-- Detect faces
   face_cascade.detectMultiScale( frame_gray, faces, 1.1, 2, 0|CV_HAAR_SCALE_IMAGE|CV_HAAR_FIND_BIGGEST_OBJECT, cv::Size(150, 150) );
-//  findSkin(debugImage);
+  //  findSkin(debugImage);
 
-  for( int i = 0; i < faces.size(); i++ )
-  {
-    rectangle(debugImage, faces[i], 1234);
-  }
   //-- Show what you got
   if (faces.size() > 0) {
-    findEyes(frame_gray, faces[0]);
+     int gridNumber;
+	 NumData numData;
+     numData = findEyes(frame_gray, faces[0]);
+	 gridNumber = mapToGrid(frame, numData);
+	 display(frame, numData, gridNumber);
+  }
+  else {
+    displayFrame(frame);
   }
 }

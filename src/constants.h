@@ -1,6 +1,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+
 // Debugging
 const bool kPlotVectorField = false;
 
@@ -27,5 +28,13 @@ const float kPostProcessThreshold = 0.97;
 
 // Eye Corner
 const bool kEnableEyeCorner = false;
+
+// Display
+const std::string kmain_window_name = "Capture - Face detection";
+const std::string kface_window_name = "Capture - Face";
+const std::string kleft_eye_window_name = "Capture - Left Eye";
+const std::string kright_eye_window_name = "Capture - Right Eye";
+const std::string debugWindow = "DEBUG";
+
 
 #endif

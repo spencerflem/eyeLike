@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-cv::Point mapToGrid(EyeData eyeData);
+int mapToGrid(cv::Mat frame, NumData numData);
 
 #endif

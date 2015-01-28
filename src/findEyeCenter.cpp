@@ -107,8 +107,6 @@ cv::Point findEyeCenter(cv::Mat face, cv::Rect eye, std::string debugWindow) {
   cv::Mat eyeROIUnscaled = face(eye);
   cv::Mat eyeROI;
   scaleToFastSize(eyeROIUnscaled, eyeROI);
-  // draw eye region
-  rectangle(face,eye,1234);
   //-- Find the gradient
   cv::Mat gradientX = computeMatXGradient(eyeROI);
   cv::Mat gradientY = computeMatXGradient(eyeROI.t()).t();
@@ -135,7 +133,7 @@ cv::Point findEyeCenter(cv::Mat face, cv::Rect eye, std::string debugWindow) {
       }
     }
   }
-  imshow(debugWindow,gradientX);
+
   //-- Create a blurred and inverted image for weighting
   cv::Mat weight;
   GaussianBlur( eyeROI, weight, cv::Size( kWeightBlurSize, kWeightBlurSize ), 0, 0 );
@@ -189,6 +187,7 @@ cv::Point findEyeCenter(cv::Mat face, cv::Rect eye, std::string debugWindow) {
     // redo max
     cv::minMaxLoc(out, NULL,&maxVal,NULL,&maxP,mask);
   }
+
   return unscalePoint(maxP,eye);
 }
 
@@ -200,7 +199,6 @@ bool floodShouldPushPoint(const cv::Point &np, const cv::Mat &mat) {
 
 // returns a mask
 cv::Mat floodKillEdges(cv::Mat &mat) {
-  rectangle(mat,cv::Rect(0,0,mat.cols,mat.rows),255);
   
   cv::Mat mask(mat.rows, mat.cols, CV_8U, 255);
   std::queue<cv::Point> toDo;
