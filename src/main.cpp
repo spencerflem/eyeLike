@@ -23,6 +23,7 @@ void detectAndDisplay( cv::Mat frame );
 /** Global variables */
 //-- Note, either copy these two files from opencv/data/haarscascades to your current folder, or change these locations
 cv::String face_cascade_name = "C:/Users/Katherine Hoffman/Desktop/haarcascade_frontalface_alt.xml";
+cv::String face_cascade_name_two = "C:/Users/Me/Desktop/haarcascade_frontalface_alt.xml";
 cv::CascadeClassifier face_cascade;
 cv::RNG rng(12345);
 cv::Mat debugImage;
@@ -36,7 +37,10 @@ int main( int argc, const char** argv ) {
   cv::Mat frame;
 
   // Load the cascades
-  if( !face_cascade.load( face_cascade_name ) ){ printf("--(!)Error loading face cascade, please change face_cascade_name in source code.\n"); return -1; };
+  if( !face_cascade.load( face_cascade_name) && !face_cascade.load( face_cascade_name_two)) {
+	printf("--(!)Error loading face cascade, please change face_cascade_name in source code.\n");
+	return -1;
+  }
 
   cv::namedWindow(kmain_window_name,CV_WINDOW_NORMAL);
   cv::moveWindow(kmain_window_name, 400, 100);
@@ -79,8 +83,14 @@ int main( int argc, const char** argv ) {
 
       int c = cv::waitKey(10);
       if( (char)c == 'c' ) { break; }
-      if( (char)c == 'f' ) {
+      else if( (char)c == 'f' ) {
         imwrite("frame.png",frame);
+      }
+	  else if( (char)c == 'g' ) {
+        printFrame(frame, true);
+      }
+	  else if( (char)c == 'h' ) {
+        printFrame(frame, false);
       }
 
     }

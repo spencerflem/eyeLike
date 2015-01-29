@@ -14,17 +14,36 @@
 
 cv::Mat detectGlare(cv::Mat eyeROI, cv::Point pupil, bool isLeft, double faceWidth) {
 
+	cv::Mat glareMat;
 	//Gausian Blur
 	if (kSmoothFaceImage) {
-		double sigma = kSmoothFaceFactor * faceWidth;
+		double sigma = 5;
 		GaussianBlur( eyeROI, eyeROI, cv::Size( 0, 0 ), sigma);
 	}
-	cv::Mat glareMat = cv::Mat::zeros(eyeROI.rows,eyeROI.cols,CV_32F);
+	std::vector<cv::Mat> rgbChannels(3);
+    cv::split(eyeROI, rgbChannels);
+    cv::Mat eyeROI_gray = rgbChannels[2];
+
+	cv::Mat thresh;
+	uchar thresholdThreshold = eyeROI_gray.at<uchar>(pupil);
+	std::cout << thresholdThreshold;
+	threshold(eyeROI_gray, thresh, thresholdThreshold, 255, 1);
+
 	cv::Point maxP;
     double maxVal;
-	cv::minMaxLoc(eyeROI,NULL,&maxVal,NULL,&maxP);
+	cv::minMaxLoc(eyeROI_gray,NULL,&maxVal,NULL,&maxP);
+	//std::cout << maxVal << " -- " << maxP;
+
+
+	//lame
+	cv::Mat outSum = cv::Mat::zeros(eyeROI.rows,eyeROI.cols,CV_64F);
 
 	//move to display
+
+	circle(eyeROI_gray, maxP, 3, 1234);
+	imshow("aa", eyeROI_gray);
+	imshow("aaa", thresh);
+
 	if(isLeft) {
 		imshow(kleft_eye_window_name,eyeROI);
 	}
