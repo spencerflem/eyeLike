@@ -83,8 +83,8 @@ void display(cv::Mat frame, NumData numData, int gridNumber) {
 	double threshValue = 125;
 	threshold(faceFrame_gray, thresh, threshValue, 120, 0);
 	*/
-	circle(faceFrame, numData.leftPupil, 3, 1234);
-	circle(faceFrame, numData.rightPupil, 3, 1234);
+	//circle(faceFrame, numData.leftPupil, 3, 1234);
+	//circle(faceFrame, numData.rightPupil, 3, 1234);
 
 	imshow(kface_window_name,faceFrame);
 	//displayText(numData);
@@ -96,7 +96,7 @@ void displayFrame(cv::Mat frame) {
 
 void printFrame(cv::Mat frame, bool glare) {
 	srand (time(NULL));
-	std::string randomNumber = std::to_string(rand());
+	std::string randomNumber = std::to_string(static_cast<unsigned long long>(rand()));
 	std::string imgName;
 	if (glare) {
 		imgName = "gframe-" + randomNumber + ".png";

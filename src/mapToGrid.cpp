@@ -25,7 +25,7 @@ cv::Mat detectGlare(cv::Mat eyeROI, cv::Point pupil, bool isLeft, double faceWid
     cv::Mat eyeROI_gray = rgbChannels[2];
 
 	cv::Mat thresh;
-	uchar thresholdThreshold = eyeROI_gray.at<uchar>(pupil);
+	int thresholdThreshold = eyeROI_gray.at<int>(pupil);
 	std::cout << thresholdThreshold;
 	threshold(eyeROI_gray, thresh, thresholdThreshold, 255, 1);
 
