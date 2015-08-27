@@ -87,10 +87,10 @@ int main( int argc, const char** argv ) {
         imwrite("frame.png",frame);
       }
 	  else if( (char)c == 'g' ) {
-        printFrame(frame, true);
+        printFrame(frame);
       }
 	  else if( (char)c == 'h' ) {
-        printFrame(frame, false);
+        printFrame(frame);
       }
 
     }
