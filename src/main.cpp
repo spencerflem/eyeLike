@@ -13,6 +13,7 @@
 #include "structs.h"
 #include "display.h"
 
+//REDUCE LAG ON IMAGE!
 
 /** Constants **/
 
@@ -28,12 +29,14 @@ cv::CascadeClassifier face_cascade;
 cv::RNG rng(12345);
 cv::Mat debugImage;
 cv::Mat skinCrCbHist = cv::Mat::zeros(cv::Size(256, 256), CV_8UC1);
+int frameNumber = 0;
+int threshNumber = 10;
 
 /**
  * @function main
  */
 int main( int argc, const char** argv ) {
-  CvCapture* capture;
+  cv::VideoCapture capture;
   cv::Mat frame;
 
   // Load the cascades
@@ -46,34 +49,171 @@ int main( int argc, const char** argv ) {
   cv::moveWindow(kmain_window_name, 400, 100);
   cv::namedWindow(kface_window_name,CV_WINDOW_NORMAL);
   cv::moveWindow(kface_window_name, 10, 100);
-  cv::namedWindow(kleft_eye_window_name,CV_WINDOW_NORMAL);
-  cv::moveWindow(kleft_eye_window_name, 10, 100);
+  //cv::namedWindow(kleft_eye_window_name,CV_WINDOW_NORMAL);
+  //cv::moveWindow(kleft_eye_window_name, 10, 100);
   cv::namedWindow(kright_eye_window_name,CV_WINDOW_NORMAL);
   cv::moveWindow(kright_eye_window_name, 10, 100);
-  cv::namedWindow(debugWindow + " Mask",CV_WINDOW_NORMAL);
-  cv::namedWindow("Right Eye",CV_WINDOW_NORMAL);
-  cv::moveWindow("Right Eye", 10, 600);
-  cv::namedWindow("Left Eye",CV_WINDOW_NORMAL);
-  cv::moveWindow("Left Eye", 10, 800);
-  cv::namedWindow("aa",CV_WINDOW_NORMAL);
-  cv::moveWindow("aa", 10, 800);
-  cv::namedWindow("aaa",CV_WINDOW_NORMAL);
-  cv::moveWindow("aaa", 10, 800);
+  //cv::namedWindow(debugWindow + " Mask",CV_WINDOW_NORMAL);
+  //cv::namedWindow("Right Eye",CV_WINDOW_NORMAL);
+  //cv::moveWindow("Right Eye", 10, 600);
+  //cv::namedWindow("Left Eye",CV_WINDOW_NORMAL);
+  //cv::moveWindow("Left Eye", 10, 800);
+  //cv::namedWindow("aa",CV_WINDOW_NORMAL);
+  //cv::moveWindow("aa", 10, 200);
+  //cv::namedWindow("aaa",CV_WINDOW_NORMAL);
+  //cv::moveWindow("aaa", 10, 300);
+  cv::namedWindow("ff",CV_WINDOW_NORMAL);
+  cv::moveWindow("ff", 10, 500);
 
   ellipse(skinCrCbHist, cv::Point(113, 155.6), cv::Size(23.4, 15.2),
           43.0, 0.0, 360.0, cv::Scalar(255, 255, 255), -1);
 
    // Read the video stream
-  capture = cvCaptureFromCAM( -1 );
-  if( capture ) {
-    while( true ) {
-      frame = cvQueryFrame( capture );
-      // mirror it
-      cv::flip(frame, frame, 1);
-      frame.copyTo(debugImage);
+  capture.open(-1);
+  capture >> frame;
+  //frame = cv::imread("g32756.png");
+  //cv::flip(frame, frame, 1);
+	frame = cv::imread("default.png");
+	cv::flip(frame, frame, 1);
+  while( true ) {
+	  if( capture.isOpened() ) {
+		  capture >> frame;
+		  cv::flip(frame, frame, 1);
+	  }
+	  
+      int c = cv::waitKey(10);
+	  char gFrame = 'g';
+	  char nFrame = 'n';
+	  char xFrame = (char)c;
+	  printf("%c", xFrame);
+	  
+      if( (char)c == 'c' ) { break; }
+      else if( (char)c == 'f' ) {
+        imwrite("frame.png",frame);
+      }
+	  else if( (char)c == 'q' ) {
+		  capture.release();
+      }
+	  else if( (char)c == 'w' ) {
+		  capture.open(-1);
+      }
+	  else if( (char)c == '=' ) {
+        printFrame(frame, gFrame);
+      }
+	  else if( (char)c == '-' ) {
+        printFrame(frame, nFrame);
+      }
+	  else if( (char)c == 'g' ) {
+        frame = cv::imread("g32756.png");
+		cv::flip(frame, frame, 1);
+      }
+	  else if( (char)c == 'n' ) {
+        frame = cv::imread("n32734.png");
+		cv::flip(frame, frame, 1);
+      }
+	  else if( (char)c == '0') {
+		if(threshNumber > 10) {
+			threshNumber =  0;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 0;
+		}
+	  }
+	  else if( (char)c == '9') {
+		if(threshNumber > 10) {
+			threshNumber =  9;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 9;
+		}
+	  }
+	  else if( (char)c == '8') {
+		if(threshNumber > 10) {
+			threshNumber =  8;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 8;
+		}
+	  }
+	  else if( (char)c == '7') {
+		if(threshNumber > 10) {
+			threshNumber =  7;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 7;
+		}
+	  }
+	  else if( (char)c == '6') {
+		if(threshNumber > 10) {
+			threshNumber =  6;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 6;
+		}
+	  }
+	  else if( (char)c == '1') {
+		if(threshNumber > 10) {
+			threshNumber =  1;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 1;
+		}
+	  }
+	  else if( (char)c == '2') {
+		if(threshNumber > 10) {
+			threshNumber =  2;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 2;
+		}
+	  }
+	  else if( (char)c == '3') {
+		if(threshNumber > 10) {
+			threshNumber =  3;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 3;
+		}
+	  }
+	  else if( (char)c == '4') {
+		if(threshNumber > 10) {
+			threshNumber =  4;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 4;
+		}
+	  }
+	  else if( (char)c == '5') {
+		if(threshNumber > 10) {
+			threshNumber =  5;
+		}
+		else if (threshNumber < 10) {
+			threshNumber = threshNumber*10;
+			threshNumber += 5;
+		}
+	  }
 
-      // Apply the classifier to the frame
-      if( !frame.empty() ) {
+	  else if( (char)c == '!') {
+		std::string path;
+		std::cin >> path;
+		frame = cv::imread(path);
+		cv::flip(frame, frame, 1);
+	  }
+
+	  //printf("%d",threshNumber);
+	  else if ( c != -1) {
+		  printFrame(frame, xFrame);
+	  }
+	  if( !frame.empty() ) {
         detectAndDisplay( frame );
       }
       else {
@@ -81,23 +221,7 @@ int main( int argc, const char** argv ) {
         break;
       }
 
-      int c = cv::waitKey(10);
-      if( (char)c == 'c' ) { break; }
-      else if( (char)c == 'f' ) {
-        imwrite("frame.png",frame);
-      }
-	  else if( (char)c == 'g' ) {
-        printFrame(frame);
-      }
-	  else if( (char)c == 'h' ) {
-        printFrame(frame);
-      }
-
     }
-  }
-  else {
-	  printf(" --(!) No captured frame -- Break!");
-  }
   return 0;
 }
 
@@ -160,14 +284,22 @@ void detectAndDisplay( cv::Mat frame ) {
   //  findSkin(debugImage);
 
   //-- Show what you got
-  if (faces.size() > 0) {
+   if (faces.size() > 0) {
      int gridNumber;
 	 NumData numData;
      numData = findEyes(frame_gray, faces[0]);
-	 gridNumber = mapToGrid(frame, numData);
-	 display(frame, numData, gridNumber);
+	 gridNumber = mapToGrid(frame, numData, threshNumber);
+	 if (frameNumber == 0) {
+		displayText(numData);
+		display(frame, numData, gridNumber);
+		 //imshow(kmain_window_name,frame);
+		frameNumber = 0;
+	 } else {
+		frameNumber++;
+	 }
   }
   else {
+  
     displayFrame(frame);
   }
 }

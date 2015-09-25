@@ -3,6 +3,6 @@
 
 #include "structs.h"
 
-int mapToGrid(cv::Mat frame, NumData numData);
+int mapToGrid(cv::Mat frame, NumData numData, int threshNumber);
 
 #endif

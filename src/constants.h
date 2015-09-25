@@ -36,5 +36,4 @@ const std::string kleft_eye_window_name = "Capture - Left Eye";
 const std::string kright_eye_window_name = "Capture - Right Eye";
 const std::string debugWindow = "DEBUG";
 
-
 #endif
