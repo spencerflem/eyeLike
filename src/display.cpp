@@ -36,8 +36,8 @@ void display(cv::Mat frame, NumData numData, int gridNumber) {
 
 	cv::Mat faceFrame = frame(numData.face);
 
-	circle(faceFrame, numData.rightPupil, 3, 1234);
-	circle(faceFrame, numData.leftPupil, 3, 1234);
+	//circle(faceFrame, numData.rightPupil, 3, 1234);
+	//circle(faceFrame, numData.leftPupil, 3, 1234);
 
 	cv::Mat eyeROI = faceFrame(numData.rightEyeRegion);
 
@@ -53,6 +53,42 @@ void display(cv::Mat frame, NumData numData, int gridNumber) {
 	//circle(faceFrame, numData.rightPupil, 3, 1234);
 
 	//imshow(kface_window_name,faceFrame);
+
+	cv::Mat hsv;
+	cv::Mat gry;
+	std::vector<cv::Mat> hsvchannels;
+	std::vector<cv::Mat> bgrchannels;
+	cv::cvtColor(eyeROI, hsv, CV_BGR2HSV);
+	cv::cvtColor(eyeROI, gry, CV_BGR2GRAY);
+	cv::split(hsv, hsvchannels);
+	cv::split(eyeROI, bgrchannels);
+
+	imshow("hue",hsvchannels[0]);
+	imshow("sat",hsvchannels[1]);
+	imshow("vib",hsvchannels[2]);
+
+	imshow("red",bgrchannels[2]);
+	imshow("grn",bgrchannels[1]);
+	imshow("blu",bgrchannels[0]);
+
+	/*
+	std::vector<cv::Vec3f> circles;
+	HoughCircles(gry, circles, CV_HOUGH_GRADIENT,
+                 1,4);
+	
+	//copypasta FIX!
+	for( int i = 0; i < circles.size(); i++ )
+    {
+		 std::cout << "IN@@";
+         cv::Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+         int radius = cvRound(circles[i][2]);
+         // draw the circle center
+         circle( gry, center, 3, cv::Scalar(0,255,0), -1, 8, 0 );
+         // draw the circle outline
+         circle( gry, center, radius, cv::Scalar(0,0,255), 3, 8, 0 );
+    }
+	*/
+	imshow("gry",gry);
 
 	imshow(kright_eye_window_name,eyeROI);
 	//displayText(numData);

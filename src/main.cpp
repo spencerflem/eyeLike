@@ -46,13 +46,13 @@ int main( int argc, const char** argv ) {
   }
 
   cv::namedWindow(kmain_window_name,CV_WINDOW_NORMAL);
-  cv::moveWindow(kmain_window_name, 400, 100);
+  cv::moveWindow(kmain_window_name, 0, 118);
   cv::namedWindow(kface_window_name,CV_WINDOW_NORMAL);
   cv::moveWindow(kface_window_name, 10, 100);
   //cv::namedWindow(kleft_eye_window_name,CV_WINDOW_NORMAL);
   //cv::moveWindow(kleft_eye_window_name, 10, 100);
   cv::namedWindow(kright_eye_window_name,CV_WINDOW_NORMAL);
-  cv::moveWindow(kright_eye_window_name, 10, 100);
+  cv::moveWindow(kright_eye_window_name, 969, 318);
   //cv::namedWindow(debugWindow + " Mask",CV_WINDOW_NORMAL);
   //cv::namedWindow("Right Eye",CV_WINDOW_NORMAL);
   //cv::moveWindow("Right Eye", 10, 600);
@@ -63,7 +63,27 @@ int main( int argc, const char** argv ) {
   //cv::namedWindow("aaa",CV_WINDOW_NORMAL);
   //cv::moveWindow("aaa", 10, 300);
   cv::namedWindow("ff",CV_WINDOW_NORMAL);
-  cv::moveWindow("ff", 10, 500);
+  cv::moveWindow("ff", 0, 219);
+
+  cv::namedWindow("hue",CV_WINDOW_NORMAL);
+  cv::moveWindow("hue", 0, 318);
+  cv::namedWindow("sat",CV_WINDOW_NORMAL);
+  cv::moveWindow("sat", 303, 318);
+  cv::namedWindow("vib",CV_WINDOW_NORMAL);
+  cv::moveWindow("vib", 624, 318);
+
+  cv::namedWindow("red",CV_WINDOW_NORMAL);
+  cv::moveWindow("red", 79, 0);
+  cv::namedWindow("grn",CV_WINDOW_NORMAL);
+  cv::moveWindow("grn", 400, 0);
+  cv::namedWindow("blu",CV_WINDOW_NORMAL);
+  cv::moveWindow("blu", 718, 0);
+
+  cv::namedWindow("gry",CV_WINDOW_NORMAL);
+  cv::moveWindow("gry", 1046, 0);
+
+  cv::namedWindow("COMBINED",CV_WINDOW_NORMAL);
+  cv::moveWindow("COMBINED", 1046, 100);
 
   ellipse(skinCrCbHist, cv::Point(113, 155.6), cv::Size(23.4, 15.2),
           43.0, 0.0, 360.0, cv::Scalar(255, 255, 255), -1);
@@ -81,11 +101,15 @@ int main( int argc, const char** argv ) {
 		  cv::flip(frame, frame, 1);
 	  }
 	  
-      int c = cv::waitKey(10);
+      int c = cv::waitKey(100);//was 10
 	  char gFrame = 'g';
 	  char nFrame = 'n';
 	  char xFrame = (char)c;
 	  printf("%c", xFrame);
+	  
+	  if ( c != -1) {
+		  std::cout << ":";
+	  }
 	  
       if( (char)c == 'c' ) { break; }
       else if( (char)c == 'f' ) {
@@ -119,6 +143,7 @@ int main( int argc, const char** argv ) {
 			threshNumber = threshNumber*10;
 			threshNumber += 0;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '9') {
 		if(threshNumber > 10) {
@@ -128,78 +153,87 @@ int main( int argc, const char** argv ) {
 			threshNumber = threshNumber*10;
 			threshNumber += 9;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '8') {
-		if(threshNumber > 10) {
+		if(threshNumber >= 10) {
 			threshNumber =  8;
 		}
-		else if (threshNumber < 10) {
+		else {
 			threshNumber = threshNumber*10;
 			threshNumber += 8;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '7') {
-		if(threshNumber > 10) {
+		if(threshNumber >= 10) {
 			threshNumber =  7;
 		}
-		else if (threshNumber < 10) {
+		else {
 			threshNumber = threshNumber*10;
 			threshNumber += 7;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '6') {
-		if(threshNumber > 10) {
+		if(threshNumber >= 10) {
 			threshNumber =  6;
 		}
-		else if (threshNumber < 10) {
+		else {
 			threshNumber = threshNumber*10;
 			threshNumber += 6;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '1') {
-		if(threshNumber > 10) {
+		if(threshNumber >= 10) {
 			threshNumber =  1;
 		}
-		else if (threshNumber < 10) {
+		else {
 			threshNumber = threshNumber*10;
 			threshNumber += 1;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '2') {
-		if(threshNumber > 10) {
+		if(threshNumber >= 10) {
 			threshNumber =  2;
 		}
-		else if (threshNumber < 10) {
+		else {
 			threshNumber = threshNumber*10;
 			threshNumber += 2;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '3') {
-		if(threshNumber > 10) {
+		if(threshNumber >= 10) {
 			threshNumber =  3;
 		}
-		else if (threshNumber < 10) {
+		else {
 			threshNumber = threshNumber*10;
 			threshNumber += 3;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '4') {
-		if(threshNumber > 10) {
+		if(threshNumber >= 10) {
 			threshNumber =  4;
 		}
-		else if (threshNumber < 10) {
+		else {
 			threshNumber = threshNumber*10;
 			threshNumber += 4;
 		}
+		std::cout << threshNumber;
 	  }
 	  else if( (char)c == '5') {
-		if(threshNumber > 10) {
+		if(threshNumber >= 10) {
 			threshNumber =  5;
 		}
-		else if (threshNumber < 10) {
+		else {
 			threshNumber = threshNumber*10;
 			threshNumber += 5;
 		}
+		std::cout << threshNumber;
 	  }
 
 	  else if( (char)c == '!') {
@@ -220,6 +254,10 @@ int main( int argc, const char** argv ) {
         printf(" --(!) No captured frame -- Break!");
         break;
       }
+	  
+	  if ( c != -1) {
+		  std::cout << ":";
+	  }
 
     }
   return 0;
@@ -290,7 +328,7 @@ void detectAndDisplay( cv::Mat frame ) {
      numData = findEyes(frame_gray, faces[0]);
 	 gridNumber = mapToGrid(frame, numData, threshNumber);
 	 if (frameNumber == 0) {
-		displayText(numData);
+		//displayText(numData);
 		display(frame, numData, gridNumber);
 		 //imshow(kmain_window_name,frame);
 		frameNumber = 0;
