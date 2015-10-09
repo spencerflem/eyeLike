@@ -49,8 +49,8 @@ void display(cv::Mat frame, NumData numData, int gridNumber) {
 	double threshValue = 125;
 	threshold(faceFrame_gray, thresh, threshValue, 120, 0);
 	*/
-	//circle(faceFrame, numData.leftPupil, 3, 1234);
-	//circle(faceFrame, numData.rightPupil, 3, 1234);
+	circle(faceFrame, numData.leftPupil, 3, 1234);
+	circle(faceFrame, numData.rightPupil, 3, 1234);
 
 	//imshow(kface_window_name,faceFrame);
 

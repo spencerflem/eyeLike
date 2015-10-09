@@ -30,7 +30,7 @@ cv::RNG rng(12345);
 cv::Mat debugImage;
 cv::Mat skinCrCbHist = cv::Mat::zeros(cv::Size(256, 256), CV_8UC1);
 int frameNumber = 0;
-int threshNumber = 10;
+int threshNumber = 5;
 
 /**
  * @function main
@@ -101,7 +101,7 @@ int main( int argc, const char** argv ) {
 		  cv::flip(frame, frame, 1);
 	  }
 	  
-      int c = cv::waitKey(100);//was 10
+      int c = cv::waitKey(100);//was 10; I like 100
 	  char gFrame = 'g';
 	  char nFrame = 'n';
 	  char xFrame = (char)c;

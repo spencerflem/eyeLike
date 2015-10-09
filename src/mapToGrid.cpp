@@ -46,18 +46,28 @@ bool isGlare(cv::Mat eyeROI, cv::Point pupil, bool isLeft, double faceWidth, int
 	cv::Mat eq;
 	cv::equalizeHist(eyeROI_gray, eq);
 
-	threshold(eq, thresh, threshNumber, 255, 0);
+	//threshold(eq, thresh, threshNumber, 255, 0);
+	threshold(eyeROI_gray, thresh, threshNumber, 255, 0);
 
 	cv::Mat floodFilled;
 	thresh.copyTo(floodFilled);
 
 	cv::floodFill(floodFilled, cv::Point(0,0), 50, (cv::Rect*)0, cv::Scalar(), 1);
-
+	
+	cv::Mat detected;
+	cv::SimpleBlobDetector detector;
+	std::vector<cv::KeyPoint> keypoints;
+	detector.detect(floodFilled, keypoints);
+	//std::cout << keypoints;
+	cv::drawKeypoints(floodFilled, keypoints, detected, cv::Scalar(0,0,255), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
 
 	if(!isLeft) {
 		//imshow("aa", eyeROI_gray);
 		//imshow("aaa", thresh);
-		imshow("ff", floodFilled);
+		//imshow("ff", detected);
+		cv::Mat thresh2;
+		threshold(rgbChannels[0], thresh2, threshNumber, 255, 0);
+		imshow("ff",thresh2);
 
 		cv::Mat combined;
 		std::vector<cv::Mat> all;
@@ -66,7 +76,7 @@ bool isGlare(cv::Mat eyeROI, cv::Point pupil, bool isLeft, double faceWidth, int
 		cv::multiply(thresh, eyeROI_gray, combinedRed);
 
         all.push_back(rgbChannels[0]);
-        all.push_back(rgbChannels[1]);
+        all.push_back(thresh2);
         all.push_back(thresh);
 
 		cv::merge(all,combined);
