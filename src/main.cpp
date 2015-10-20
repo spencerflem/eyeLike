@@ -135,103 +135,19 @@ int main( int argc, const char** argv ) {
         frame = cv::imread("n32734.png");
 		cv::flip(frame, frame, 1);
       }
-	  else if( (char)c == '0') {
-		if(threshNumber > 10) {
-			threshNumber =  0;
-		}
-		else if (threshNumber < 10) {
-			threshNumber = threshNumber*10;
-			threshNumber += 0;
-		}
-		std::cout << threshNumber;
+	  else if ((char)c == '`') {
+		threshNumber = 0;
 	  }
-	  else if( (char)c == '9') {
-		if(threshNumber > 10) {
-			threshNumber =  9;
-		}
-		else if (threshNumber < 10) {
-			threshNumber = threshNumber*10;
-			threshNumber += 9;
-		}
-		std::cout << threshNumber;
-	  }
-	  else if( (char)c == '8') {
-		if(threshNumber >= 10) {
-			threshNumber =  8;
+	  else if (isdigit((char)c)) {
+		int value = c - '0';
+		if(threshNumber >= 100) {
+			threshNumber = value;
 		}
 		else {
-			threshNumber = threshNumber*10;
-			threshNumber += 8;
+			threshNumber = threshNumber*10 + value;
 		}
-		std::cout << threshNumber;
-	  }
-	  else if( (char)c == '7') {
-		if(threshNumber >= 10) {
-			threshNumber =  7;
-		}
-		else {
-			threshNumber = threshNumber*10;
-			threshNumber += 7;
-		}
-		std::cout << threshNumber;
-	  }
-	  else if( (char)c == '6') {
-		if(threshNumber >= 10) {
-			threshNumber =  6;
-		}
-		else {
-			threshNumber = threshNumber*10;
-			threshNumber += 6;
-		}
-		std::cout << threshNumber;
-	  }
-	  else if( (char)c == '1') {
-		if(threshNumber >= 10) {
-			threshNumber =  1;
-		}
-		else {
-			threshNumber = threshNumber*10;
-			threshNumber += 1;
-		}
-		std::cout << threshNumber;
-	  }
-	  else if( (char)c == '2') {
-		if(threshNumber >= 10) {
-			threshNumber =  2;
-		}
-		else {
-			threshNumber = threshNumber*10;
-			threshNumber += 2;
-		}
-		std::cout << threshNumber;
-	  }
-	  else if( (char)c == '3') {
-		if(threshNumber >= 10) {
-			threshNumber =  3;
-		}
-		else {
-			threshNumber = threshNumber*10;
-			threshNumber += 3;
-		}
-		std::cout << threshNumber;
-	  }
-	  else if( (char)c == '4') {
-		if(threshNumber >= 10) {
-			threshNumber =  4;
-		}
-		else {
-			threshNumber = threshNumber*10;
-			threshNumber += 4;
-		}
-		std::cout << threshNumber;
-	  }
-	  else if( (char)c == '5') {
-		if(threshNumber >= 10) {
-			threshNumber =  5;
-		}
-		else {
-			threshNumber = threshNumber*10;
-			threshNumber += 5;
+		if(threshNumber > 255) {
+			threshNumber = 255;
 		}
 		std::cout << threshNumber;
 	  }

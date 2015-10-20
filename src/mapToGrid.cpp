@@ -49,6 +49,8 @@ bool isGlare(cv::Mat eyeROI, cv::Point pupil, bool isLeft, double faceWidth, int
 	//threshold(eq, thresh, threshNumber, 255, 0);
 	threshold(eyeROI_gray, thresh, threshNumber, 255, 0);
 
+	//cv::
+
 	cv::Mat floodFilled;
 	thresh.copyTo(floodFilled);
 
@@ -65,19 +67,19 @@ bool isGlare(cv::Mat eyeROI, cv::Point pupil, bool isLeft, double faceWidth, int
 		//imshow("aa", eyeROI_gray);
 		//imshow("aaa", thresh);
 		//imshow("ff", detected);
-		cv::Mat thresh2;
-		threshold(rgbChannels[0], thresh2, threshNumber, 255, 0);
-		imshow("ff",thresh2);
+		imshow("ff",thresh);
+
+		cv::Mat maskedGreen;
+		rgbChannels[1].copyTo(maskedGreen,thresh);
+		cv::Mat maskedBlue;
+		rgbChannels[0].copyTo(maskedBlue,thresh);
 
 		cv::Mat combined;
 		std::vector<cv::Mat> all;
 
-		cv::Mat combinedRed;
-		cv::multiply(thresh, eyeROI_gray, combinedRed);
-
-        all.push_back(rgbChannels[0]);
-        all.push_back(thresh2);
-        all.push_back(thresh);
+        all.push_back(maskedBlue);
+        all.push_back(maskedGreen);
+        all.push_back(rgbChannels[2]);
 
 		cv::merge(all,combined);
 
